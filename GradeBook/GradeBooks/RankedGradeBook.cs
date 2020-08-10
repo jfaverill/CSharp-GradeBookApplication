@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GradeBook.Enums;
+using System.Linq;
 
 namespace GradeBook.GradeBooks
 {
@@ -18,10 +19,10 @@ namespace GradeBook.GradeBooks
                 throw new InvalidOperationException();
             }
 
-            var limitForA = (int) (Students.Count * 0.2);
-            var limitForB = (int) (Students.Count * 0.4);
-            var limitForC = (int) (Students.Count * 0.6);
-            var limitForD = (int) (Students.Count * 0.8);
+            var limitForA = (int) Math.Ceiling(Students.Count * 0.2);
+            var limitForB = (int) Math.Ceiling(Students.Count * 0.4);
+            var limitForC = (int) Math.Ceiling(Students.Count * 0.6);
+            var limitForD = (int) Math.Ceiling(Students.Count * 0.8);
             var averageGrades = new List<double>();
 
             foreach (Student student in Students)
@@ -30,30 +31,25 @@ namespace GradeBook.GradeBooks
             }
 
             averageGrades.Sort();
+            averageGrades.Reverse();
 
-            for (int i = 0; i < Students.Count; i++)
+            if (averageGrade >= averageGrades[limitForA - 1])
             {
-                if (averageGrade > averageGrades[i])
-                {
-                    if (i + 1 <= limitForA)
-                    {
-                        return 'A';
-                    }
-                    else if (i + 1 <= limitForB)
-                    {
-                        return 'B';
-                    }
-                    else if (i + 1 <= limitForC)
-                    {
-                        return 'C';
-                    }
-                    else if (i + 1 <= limitForD)
-                    {
-                        return 'D';
-                    }
-                }
+                return 'A';
             }
-
+            else if (averageGrade >= averageGrades[limitForB - 1])
+            {
+                return 'B';
+            }
+            else if (averageGrade >= averageGrades[limitForC - 1])
+            {
+                return 'C';
+            }
+            else if (averageGrade >= averageGrades[limitForD - 1])
+            {
+                return 'D';
+            }
+       
             return 'F';
         }
     }
